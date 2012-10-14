@@ -1,0 +1,12 @@
+#pragma once
+#include "control.h"
+#include "Button.h"
+#include "check.h"
+#include "form.h"
+#include "HScroll.h"
+#include "Label.h"
+#include "misc.h"
+#include "radiobutton.h"
+#include "scrollButton.h"
+#include "textBox.h"
+#include "VScroll.h"
