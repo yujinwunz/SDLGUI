@@ -178,7 +178,7 @@ void form::handleEvent(SDL_Event &e){
 	}else if(e.type == SDL_MOUSEBUTTONUP){
 		//if(!within(left,top,width,height,e.button.x,e.button.y))return;
 		//find which control this event belongs to.
-		int control, type;
+		int control=-2, type;
 		if(e.button.button == SDL_BUTTON_LEFT){
 			control = leftBindedControl; type = event_Lclick;
 			leftBindedControl = -2;
@@ -201,7 +201,7 @@ void form::handleEvent(SDL_Event &e){
 				te.type = type;
 				children[control]->handleEvent(te);
 			}
-		}else{
+		}else if(control==-1){
 			SDL_Event te;
 			te.type = type;
 			this->callEvent(&te,te.type);
@@ -214,8 +214,12 @@ void form::handleEvent(SDL_Event &e){
 			
 	}else if(e.type == event_keydown||e.type==event_keyup){
 		//keys only send to focus.
-		if(focusedControl>0) children[focusedControl]->handleEvent(e);
-		if(focusedControl==-1) this->callEvent(&e,e.type);
+		if(focusedControl>=0) children[focusedControl]->handleEvent(e);
+		//if(focusedControl==-1) this->callEvent(&e,e.type);
+		//always preview key.
+		this->callEvent(&e,e.type);
+	}else{
+		callEvent(&e,e.type);
 	}
 }
 void form::mouseLeave(SDL_Event *e){
@@ -256,7 +260,6 @@ void form::render(SDL_Surface *s){
 	for(int i = 0; i < children.size(); i++){
 		children[i]->render(ts);
 	}
-
 	SDL_BlitSurface(ts,NULL,s,&dRect);
 	SDL_FreeSurface(ts);
 }
@@ -274,3 +277,6 @@ void form::stopFramerate(){
 	renderStatred = false;
 }
 	
+form::~form(){
+	if(renderStatred) SDL_RemoveTimer(frametimer);
+}

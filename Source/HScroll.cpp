@@ -9,7 +9,7 @@ int HScroll::getScrollPos(int val){
 int HScroll::getScrollVal(int pos){
 	pos-=lower->width;
 	int space = width - lower->width - higher->width - scroll->width;
-	return (pos*(maxVal-minVal))/space;
+	return (pos*(maxVal-minVal))/space + minVal;
 }
 
 HScroll::HScroll(form* parent, int x, int y, int w, int h, int minVal, int maxVal, int startVal):form(x,y,w,h,parent){

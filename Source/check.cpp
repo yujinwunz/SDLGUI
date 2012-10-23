@@ -43,7 +43,7 @@ checkBox::checkBox(form *parent, int x, int y, int w, int h):form(x,y,w,h,parent
 
 	l->addHandler(event_Lclick,&Ltoggle);
 	b->addHandler(event_Lclick,&Btoggle);
-	addHandler(event_Lclick,&toggle);
+	//addHandler(event_Lclick,&toggle);
 	addChild(l);
 	addChild(b);
 	backColour.r = backColour.g = backColour.b = 100;
@@ -69,12 +69,17 @@ static void toggle(SDL_Event *e, void* p){
 }
 
 static void Btoggle(SDL_Event *e, void* p){
+	if(_DEGUGG)cout<<"BToggle\n";
 	checkBoxBox *s = (checkBoxBox*)(p);
 	toggle(e,s->parent);
 }
 
 static void Ltoggle(SDL_Event *e, void* p){
+	if(_DEGUGG)cout<<"LToggle"<<"\n";
 	label *s = (label*)(p);
 	toggle(e,s->parent);
 }
 
+void checkBox::setTextColour(int r, int g, int b, int a){
+	l->setTextColour(r,g,b);
+}

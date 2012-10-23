@@ -42,4 +42,8 @@ public:
 	void clearLeft(SDL_Event *e);
 	void clearRight(SDL_Event *e);
 	void addToGroup(radioButton *r);
+
+	//commands
+	void select();
+	void setTextColour(int r, int g, int b, int a = 255);
 };

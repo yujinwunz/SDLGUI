@@ -10,3 +10,4 @@
 #include "scrollButton.h"
 #include "textBox.h"
 #include "VScroll.h"
+#include "textInput.h"

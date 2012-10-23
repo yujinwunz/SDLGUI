@@ -20,7 +20,7 @@ class form;
 #define _defaultBackcolour {10,10,10,255}
 #define _defaultTextcolour {255,255,200,255}
 
-#define _defaultFont TTF_OpenFont("C:/Windows/Fonts/arial.ttf",16)
+#define _defaultFont DefaultFont
 bool within(int x, int y, int w, int h, int x1, int y1);
 
 #define _controlOutlineR 20
@@ -67,13 +67,16 @@ enum EventID{
 	event_render = 77,
 	event_checkchanged = 78,
 	event_scroll = 79,
-	event_frameTick = 80,
+	event_frameTick = 25,
 
 	event_textChanged = 81,
+	event_accept = 82,
+	event_cancel = 83,
 };
 Uint32 timerTick(Uint32 interval, void* p);
 class control{
 public:
+	bool enabled;
 	virtual void frameTick(SDL_Event *e);
 	string name;
 	void addHandler(int type, void (*h)(SDL_Event*,void*));
@@ -101,15 +104,16 @@ public:
 	vector <control*> children;
 	virtual void render(SDL_Surface* s);
 
-	void setPos(int x, int y);
-	void setSize(int x, int y);
-	void setForeColour(int r, int g, int b, int a = 255);
-	void setBackColour(int r, int g, int b, int a = 255);
-	void setTextColour(int r, int g, int b, int a = 255);
-	void setFontColour(int r, int g, int b, int a = 255);
-	void setFont(string family, int size);
-	void setFont(TTF_Font *font);
-	void setParent(form* p);
+	void *tag;
+
+	virtual void setPos(int x, int y);
+	virtual void setSize(int x, int y);
+	virtual void setForeColour(int r, int g, int b, int a = 255);
+	virtual void setBackColour(int r, int g, int b, int a = 255);
+	virtual void setTextColour(int r, int g, int b, int a = 255);
+	virtual void setFont(string family, int size);
+	virtual void setFont(TTF_Font *font);
+	virtual void setParent(form* p);
 	virtual void handleEvent(SDL_Event &e);
 };
 

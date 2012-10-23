@@ -36,4 +36,6 @@ public:
 	void mouseDown(SDL_Event *e);
 	~checkBox();
 	virtual void draw(SDL_Surface *s);
+
+	void setTextColour(int r, int g, int b, int a = 255);
 };

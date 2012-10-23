@@ -57,15 +57,15 @@ void radioButton::draw(SDL_Surface *s){};
 
 //used to set only one button in a group to true.
 void radioButton::clearLeft(SDL_Event *e){
-	if(checked) callEvent(e,event_checkchanged);
 	checked = b->checked = false;
+	if(checked) callEvent(e,event_checkchanged);
 	callEvent(e,event_checkchanged);
 	if(left!=NULL) left->clearLeft(e);
 }
 
 void radioButton::clearRight(SDL_Event *e){
-	if(checked) callEvent(e,event_checkchanged);
 	checked = b->checked = false;
+	if(checked) callEvent(e,event_checkchanged);
 	callEvent(e,event_checkchanged);
 	if(right != NULL) right->clearRight(e);
 }
@@ -102,3 +102,11 @@ static void radioLtoggle(SDL_Event *e, void* p){
 	radiotoggle(e,s->parent);
 }
 
+void radioButton::select(){
+	SDL_Event e;
+	radiotoggle(&e,this);
+}
+
+void radioButton::setTextColour(int r, int g, int b, int a){
+	l->setTextColour(r,g,b);
+}

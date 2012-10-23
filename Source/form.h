@@ -2,6 +2,7 @@
 #include "control.h"
 
 class form:public control{
+public:
 	control *pressedControl;
 	int findChild(control *c);
 	int focusedControl;
@@ -26,4 +27,5 @@ public:
 	SDL_TimerID frametimer;
 	void startFramerate(float fps, SDL_Surface *s);
 	void stopFramerate();
+	~form();
 };

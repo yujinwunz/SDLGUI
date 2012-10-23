@@ -8,7 +8,7 @@ int VScroll::getScrollPos(int val){
 int  VScroll::getScrollVal(int pos){
 	pos-=lower->height;
 	int space = height - lower->height - higher->height - scroll->height;
-	return (pos*(maxVal-minVal))/space;
+	return (pos*(maxVal-minVal))/space + minVal;
 }
 
  VScroll::VScroll(form* parent, int x, int y, int w, int h, int minVal, int maxVal, int startVal):form(x,y,w,h,parent){

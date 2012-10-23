@@ -1,8 +1,13 @@
 
 #include "control.h"
 #include "form.h"
+
+TTF_Font *DefaultFont;
+
 Uint32 timerTick(Uint32 interval, void* p){
-	
+	SDL_Event events[10];
+	//check if there are one or more frame events. If so, don't tick another one!
+	if(SDL_PeepEvents(events,10,SDL_PEEKEVENT,SDL_EVENTMASK(event_frameTick))>=1) return interval;
 	//push an event.
 	SDL_Event e;
 	e.type = event_frameTick;
@@ -43,8 +48,8 @@ void control::mouseUp(SDL_Event *e){
 	if(e->button.button == SDL_BUTTON_MIDDLE) middleDown = false;
 }
 void control::draw(SDL_Surface *s){
-	if ((hovered&&!leftDown)||(leftDown&&!hovered)) SDL_FillRect(s,NULL,(foreColour.r<<16)|(foreColour.g<<8)|foreColour.b);
-	else if ((leftDown&&hovered)||(!leftDown&&!hovered))SDL_FillRect(s,NULL,(backColour.r<<16)|(backColour.g<<8)|backColour.b);
+	SDL_FillRect(s,NULL,(foreColour.r<<16)|(foreColour.g<<8)|foreColour.b);
+
 }	//the default draw.
 
 void control::callEvent(SDL_Event *e, unsigned short type){
@@ -56,7 +61,7 @@ control::control(form *parent, SDL_Colour *foreColour, SDL_Colour *backColour, S
 	SDL_Colour backC = _defaultBackcolour;
 	SDL_Colour textC = _defaultTextcolour;
 	TTF_Font *dFont = _defaultFont;
-
+	this->parent=NULL;
 	setParent(parent);
 	if(foreColour != NULL) this->foreColour = *foreColour;
 	else this->foreColour = foreC;
@@ -69,6 +74,8 @@ control::control(form *parent, SDL_Colour *foreColour, SDL_Colour *backColour, S
 		
 	hovered=leftDown=middleDown=rightDown=focused=false;
 	for(int i = 0; i < 256; i++) this->handler[i] = NULL;
+
+	enabled = true;
 }
 
 control::control(form *parent, int x, int y, int width, int height, SDL_Colour *foreColour, SDL_Colour *backColour, SDL_Color *textColour, TTF_Font *font){
@@ -79,6 +86,7 @@ control::control(form *parent, int x, int y, int width, int height, SDL_Colour *
 	SDL_Colour textC = _defaultTextcolour;
 	TTF_Font *dFont = _defaultFont;
 
+	this->parent = NULL;
 	setParent(parent);
 	if(foreColour != NULL) this->foreColour = *foreColour;
 	else this->foreColour = foreC;
@@ -91,6 +99,8 @@ control::control(form *parent, int x, int y, int width, int height, SDL_Colour *
 		
 	hovered=leftDown=middleDown=rightDown=focused=false;
 	for(int i = 0; i < 256; i++) this->handler[i] = NULL;
+
+	enabled = true;
 }
 
 void control::getFocus(){
@@ -139,11 +149,16 @@ void control::setBackColour(int r, int g, int b, int a){
 	backColour = c;
 }
 void control::setTextColour(int r, int g, int b, int a){
+	//cout<<r<<","<<g<<","<<b<<"\n";
 	SDL_Color c = {r,g,b,a};
 	textColour = c;
 }
 void control::setFont(string family, int size){
-	font = TTF_OpenFont(family.c_str(),size);
+	//font = TTF_OpenFont(family.c_str(),size);
+}
+void control::setFont(TTF_Font* f){
+	//font = TTF_OpenFont(family.c_str(),size);
+	font = f;
 }
 void control::setParent(form* p){
 	if(p==parent) return;

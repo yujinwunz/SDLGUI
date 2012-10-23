@@ -2,7 +2,7 @@
 #include "misc.h"
 #include <SDL_ttf.h>
 using namespace std;
-
+#include <iostream>
 
 void drawText(string text, int x, int y, TTF_Font *font, SDL_Surface* dest, int r, int g, int b ,TextAlign a){
 	
@@ -21,9 +21,10 @@ void drawText(string text, int x, int y, TTF_Font *font, SDL_Surface* dest, int 
 				 }break;
 	}
 
-	SDL_Color c = {r,g,b};
+	SDL_Color c = {r,g,b,255};
 	SDL_Rect Drect = {x,y,width,height};
 	SDL_Surface *memoryLeak = TTF_RenderText_Solid(font,text.c_str(),c);
+	//cout<<r<<","<<g<<","<<b<<"\n";
 	SDL_BlitSurface(memoryLeak,NULL,dest,&Drect);
 	SDL_FreeSurface(memoryLeak);
 }
@@ -60,6 +61,11 @@ string intToString(int number)
         return "0";
     string temp="";
     string returnvalue="";
+	if(number<0){
+		returnvalue += "-";
+		number *= -1;
+	}
+
     while (number>0)
     {
         temp+=number%10+48;
@@ -68,6 +74,10 @@ string intToString(int number)
     for (int i=0;i<temp.length();i++)
         returnvalue+=temp[temp.length()-i-1];
     return returnvalue;
+}
+
+int stringToInt(string text){
+	return 0;
 }
 
 void DrawCircle8(SDL_Surface *s, int x, int y, int cx, int cy, int r, int g, int b, int a ) {
